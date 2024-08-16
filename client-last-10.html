@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Message History</title>
+</head>
+<body>
+    <h1>Messages from the Last 10 Minutes</h1>
+    <ul id="messages"></ul>
+    <script>
+        async function fetchMessages() {
+            const now = new Date();
+            const tenMinutesAgo = new Date(now.getTime() - 10 * 60000);
+
+            const start = tenMinutesAgo.toISOString();
+            const end = now.toISOString();
+
+            const response = await fetch(`http://localhost:7223/api/messages?start=${start}&end=${end}`);
+            const messages = await response.json();
+
+            const messageList = document.getElementById("messages");
+            messageList.innerHTML = ""; // Очищаем список перед отображением новых сообщений
+
+            messages.forEach(message => {
+                const newMessage = document.createElement("li");
+                newMessage.textContent = `[${message.createdAt}] #${message.sequenceNumber}: ${message.content}`;
+                messageList.appendChild(newMessage);
+            });
+        }
+
+        // Обновляем сообщения каждые 10 секунд
+        setInterval(fetchMessages, 10000);
+
+        // Первоначальная загрузка сообщений
+        fetchMessages();
+    </script>
+</body>
+</html>
