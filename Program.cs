@@ -17,7 +17,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
-builder.Services.AddScoped<MessageWebSocketHandler>(); // Не забудьте добавить зависимость для WebSocketHandler
+builder.Services.AddScoped<MessageWebSocketHandler>(); 
 builder.Services.AddHostedService<DatabaseInitializer>();
 
 builder.Services.AddCors(options =>
